@@ -34,8 +34,13 @@ class Player():
 
     def __init__(self):
         self.balance = 0
-        self.card_one = ()
-        self.card_two = ()
+        self.cards = []
+
+    def receive_card(self,*args):
+        for card in args:
+            self.cards.append(card)
+
+
 
 class Table():
 
@@ -54,24 +59,50 @@ class Table():
         pass
     pass
 
+class Game():
+
+    def __init__(self):
+        pass
+    def sum_cards(self,card_list):
+
+        card_value = {'2': 2,'3': 3,'4': 4,'5': 5,'6': 6,'7': 7,'8': 8,'9': 9,'10': 10,'J': 10,'Q': 10,'K': 10,'A': 11}
+        sum_cards = 0
+
+        for card in card_list:
+            sum_cards += card_value[card[0]]
+
+        print(sum_cards)
+        if (sum_cards > 21) and ('A' in [card[0] for card in card_list]):
+            sum_cards -= 10
+
+        print(sum_cards)
+        return sum_cards
 
 
 
 # Game loop
 while True:
     player = Player()
+    dealer = Player()
     deck = Deck()
 
-    player.card_one = deck.buy()
-    player.card_two = deck.buy()
+    # Give 2 cards to the player
+    player.receive_card(deck.buy(),deck.buy())
 
+    # Player's turn
     while True:
-        action = input("Hit or Stay? H/S")
+        action = input("Hit or Stay? H/S ")
         if (action == "H"):
-            # receive another card
+            # Receive another card
+            player.receive_card(deck.buy())
+
+            if (Game().sum_cards(player.cards) > 21):
+                print(f"Player SUM over 21!")
+                break
+            
+            continue
 
 
-            pass
         elif (action == "S"):
             # stop receiving cards
             pass
