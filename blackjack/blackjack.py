@@ -101,8 +101,8 @@ class Table():
         print("")
 
     def menu(self):
+        # TO DO
         pass
-    pass
 
 class Game():
 
