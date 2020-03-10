@@ -43,21 +43,62 @@ class Player():
             self.open_cards.append(self.cards[card])
 
     def receive_card(self,*args):
-        for card in args:
+        for index,card in enumerate(args):
+            if (index == 1):
+                self.cards.append(card)
+                continue
             self.cards.append(card)
+            self.open_cards.append(card)
 
 class Table():
 
-    def show(self):
-        if platform.system() == 'Windows':
-            clear = lambda: os.system('cls')
-        elif platform.system() == 'Linux' or platform.system() == 'Darwin':
-            clear = lambda: os.system('clear')
+    def __init__(self):
+        self.dealer_cards = []
+        self.player_cards = []
 
-        clear()
+    def clear(self):
+        if platform.system() == 'Windows':
+            os.system('cls')
+        elif platform.system() == 'Linux' or platform.system() == 'Darwin':
+            os.system('clear')
+
+    def show(self,player_cards,dealer_cards):
+
+        self.clear()
 
         # Print the game
+        print("     ", end = '')
+        for index,card in enumerate(dealer_cards):
+            if index == 1:
+                print("X   ", end = '')
+            else:
+                print(f"{card[0]}   ", end = '')
+        
+        print("")
+        print(f"               ")
+        print(f"               ")
 
+        print("     ", end = '')
+        for card in player_cards:
+            print(f"{card[0]}   ", end = '')
+        print("")
+
+    def show_revealed(self,player_cards,dealer_cards):
+        self.clear()
+
+        # Print the game
+        print("     ", end = '')
+        for card in dealer_cards:
+            print(f"{card[0]}   ", end = '')
+        
+        print("")
+        print(f"               ")
+        print(f"               ")
+
+        print("     ", end = '')
+        for card in player_cards:
+            print(f"{card[0]}   ", end = '')
+        print("")
 
     def menu(self):
         pass
@@ -80,10 +121,10 @@ class Game():
 
         return sum_cards
 
-
+gaming = "Y"
 
 # Game loop
-while True:
+while gaming == "Y":
     player = Player()
     dealer = Player()
     deck = Deck()
@@ -93,12 +134,18 @@ while True:
     player.receive_card(deck.buy(),deck.buy())
     dealer.receive_card(deck.buy(),deck.buy())
 
+    #print(player.cards)
+    #print(dealer.cards)
+    Table().show(player.cards,dealer.cards)
+
     # Player's turn
     while True:
         action = input("Hit or Stay? H/S ")
         if (action == "H"):
             # Receive another card
             player.receive_card(deck.buy())
+
+            Table().show(player.cards,dealer.cards)
 
             if (Game().sum_cards(player.cards) > 21):
                 print(f"Dealer wins!")
@@ -115,23 +162,29 @@ while True:
         while True:
             if (dealer.cards[0][0] == 'A'):
                 # Look for BlackJack
-                for card in dealer.cards:
-                    print(card)
+                Table().show_revealed(player.cards,dealer.cards)
                 if (Game().sum_cards(dealer.cards) == 21):
                     print("Dealer wins!")
                     break
 
             dealer.receive_card(deck.buy())
 
+            Table().show(player.cards,dealer.cards)
+
             if (Game().sum_cards(dealer.open_cards) > 17):
-                # reveal hidden card
+                # Reveal hidden card
+                Table().show_revealed(player.cards,dealer.cards)
+
                 if (Game().sum_cards(dealer.cards) > 21):
                     print(f"Player wins!")
                 elif (Game().sum_cards(dealer.cards)) > (Game().sum_cards(player.cards)):
                     print(f"Dealer wins!")
                 elif (Game().sum_cards(dealer.cards)) < (Game().sum_cards(player.cards)):
                     print(f"Player wins!")
+                else:
+                    print("The game tied!")
                 break 
+    gaming = input("Play again? Y/N ")
 
             
 
