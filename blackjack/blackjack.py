@@ -35,6 +35,12 @@ class Player():
     def __init__(self):
         self.balance = 0
         self.cards = []
+        self.open_cards = []
+
+        for card,index in enumerate(self.cards):
+            if (index == 1):
+                continue
+            self.open_cards.append(self.cards[card])
 
     def receive_card(self,*args):
         for card in args:
@@ -81,32 +87,53 @@ while True:
     player = Player()
     dealer = Player()
     deck = Deck()
+    dealerWon = False
 
-    # Give 2 cards to the player
+    # Give 2 cards to the player and dealer
     player.receive_card(deck.buy(),deck.buy())
+    dealer.receive_card(deck.buy(),deck.buy())
 
     # Player's turn
     while True:
         action = input("Hit or Stay? H/S ")
         if (action == "H"):
-
             # Receive another card
             player.receive_card(deck.buy())
 
             if (Game().sum_cards(player.cards) > 21):
                 print(f"Dealer wins!")
+                dealerWon = True
                 break
-            
             continue
-
 
         elif (action == "S"):
             # Stop receiving cards
             break
 
-    # Dealer's turn
+    # Dealer's turn starts only if player didn't already loose
+    if not(dealerWon):
+        while True:
+            if (dealer.cards[0][0] == 'A'):
+                # Look for BlackJack
+                for card in dealer.cards:
+                    print(card)
+                if (Game().sum_cards(dealer.cards) == 21):
+                    print("Dealer wins!")
+                    break
 
-        
+            dealer.receive_card(deck.buy())
+
+            if (Game().sum_cards(dealer.open_cards) > 17):
+                # reveal hidden card
+                if (Game().sum_cards(dealer.cards) > 21):
+                    print(f"Player wins!")
+                elif (Game().sum_cards(dealer.cards)) > (Game().sum_cards(player.cards)):
+                    print(f"Dealer wins!")
+                elif (Game().sum_cards(dealer.cards)) < (Game().sum_cards(player.cards)):
+                    print(f"Player wins!")
+                break 
+
+            
 
 
 
