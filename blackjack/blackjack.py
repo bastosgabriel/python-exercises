@@ -40,8 +40,6 @@ class Player():
         for card in args:
             self.cards.append(card)
 
-
-
 class Table():
 
     def show(self):
@@ -71,11 +69,9 @@ class Game():
         for card in card_list:
             sum_cards += card_value[card[0]]
 
-        print(sum_cards)
         if (sum_cards > 21) and ('A' in [card[0] for card in card_list]):
             sum_cards -= 10
 
-        print(sum_cards)
         return sum_cards
 
 
@@ -93,19 +89,23 @@ while True:
     while True:
         action = input("Hit or Stay? H/S ")
         if (action == "H"):
+
             # Receive another card
             player.receive_card(deck.buy())
 
             if (Game().sum_cards(player.cards) > 21):
-                print(f"Player SUM over 21!")
+                print(f"Dealer wins!")
                 break
             
             continue
 
 
         elif (action == "S"):
-            # stop receiving cards
-            pass
+            # Stop receiving cards
+            break
+
+    # Dealer's turn
+
         
 
 
