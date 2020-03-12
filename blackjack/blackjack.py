@@ -6,29 +6,36 @@ import random
 import os
 import platform
 
+class Card():
+
+    def __init__(self, suit, rank):
+        values_dict = {'2': 2,'3': 3,'4': 4,'5': 5,'6': 6,'7': 7,'8': 8,'9': 9,'10': 10,'J': 10,'Q': 10,'K': 10,'A': 11}
+
+        self.rank = rank
+        self.suit = suit
+
+        for key in values_dict:
+            if (key == rank):
+                self.value = values_dict[key]
+
+
 class Deck():
     
     def __init__(self):
-        # deck.list is a list of tuples containing (card, suit, value)
-        self.suit_list = ["diamonds","clubs","hearts","spades"]
-        self.card_list = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
-        self.out_cards = []
+        self.deck = []
+        suits = ["diamonds","clubs","hearts","spades"]
+        ranks = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
 
-    '''
-    Returns a tuple with the number/face of the card and the suit (in this order)
-    '''
-    def buy(self):
+        for suit in suits:
+            for rank in ranks:
+                self.deck.append(Card(suit,rank))
 
-        while True:
-            card_num = self.card_list[random.randint(0,len(self.card_list)-1)]
-            card_suit = self.suit_list[random.randint(0,len(self.suit_list)-1)]
-            
-            if ((card_num,card_suit) in self.out_cards):
-                continue
-            else:
-                self.out_cards.append((card_num,card_suit))
-                break
-        return (card_num,card_suit)
+
+    def shuffle(self):
+        random.shuffle(self.deck)
+
+    def deal(self):
+        return (self.deck.pop())
         
 class Player():
 
@@ -131,8 +138,8 @@ while gaming == "Y":
     dealerWon = False
 
     # Give 2 cards to the player and dealer
-    player.receive_card(deck.buy(),deck.buy())
-    dealer.receive_card(deck.buy(),deck.buy())
+    player.receive_card(deck.deal(),deck.deal())
+    dealer.receive_card(deck.deal(),deck.deal())
 
     #print(player.cards)
     #print(dealer.cards)
@@ -143,7 +150,7 @@ while gaming == "Y":
         action = input("Hit or Stay? H/S ")
         if (action == "H"):
             # Receive another card
-            player.receive_card(deck.buy())
+            player.receive_card(deck.deal())
 
             Table().show(player.cards,dealer.cards)
 
@@ -167,7 +174,7 @@ while gaming == "Y":
                     print("Dealer wins!")
                     break
 
-            dealer.receive_card(deck.buy())
+            dealer.receive_card(deck.deal())
 
             Table().show(player.cards,dealer.cards)
 
@@ -185,11 +192,3 @@ while gaming == "Y":
                     print("The game tied!")
                 break 
     gaming = input("Play again? Y/N ")
-
-            
-
-
-
-
-
-
