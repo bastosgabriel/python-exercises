@@ -75,7 +75,7 @@ class Table():
             if index == 1:
                 print("X   ", end = '')
             else:
-                print(f"{card[0]}   ", end = '')
+                print(f"{card.rank}   ", end = '')
         
         print("")
         print(f"               ")
@@ -83,7 +83,7 @@ class Table():
 
         print("     ", end = '')
         for card in player_cards:
-            print(f"{card[0]}   ", end = '')
+            print(f"{card.rank}   ", end = '')
         print("")
 
     def show_revealed(self,player_cards,dealer_cards):
@@ -92,7 +92,7 @@ class Table():
         # Print the game
         print("     ", end = '')
         for card in dealer_cards:
-            print(f"{card[0]}   ", end = '')
+            print(f"{card.rank}   ", end = '')
         
         print("")
         print(f"               ")
@@ -100,7 +100,7 @@ class Table():
 
         print("     ", end = '')
         for card in player_cards:
-            print(f"{card[0]}   ", end = '')
+            print(f"{card.rank}   ", end = '')
         print("")
 
     def menu(self):
@@ -113,13 +113,12 @@ class Game():
         pass
     def sum_cards(self,card_list):
 
-        card_value = {'2': 2,'3': 3,'4': 4,'5': 5,'6': 6,'7': 7,'8': 8,'9': 9,'10': 10,'J': 10,'Q': 10,'K': 10,'A': 11}
         sum_cards = 0
 
         for card in card_list:
-            sum_cards += card_value[card[0]]
+            sum_cards += card.value
 
-        if (sum_cards > 21) and ('A' in [card[0] for card in card_list]):
+        if (sum_cards > 21) and ('A' in [card.rank for card in card_list]):
             sum_cards -= 10
 
         return sum_cards
@@ -133,12 +132,13 @@ while gaming == "Y":
     deck = Deck()
     dealerWon = False
 
+    deck.shuffle()
+
     # Give 2 cards to the player and dealer
     player.receive_card(deck.deal(),deck.deal())
     dealer.receive_card(deck.deal(),deck.deal())
 
-    #print(player.cards)
-    #print(dealer.cards)
+
     Table().show(player.cards,dealer.cards)
 
     # Player's turn
@@ -163,7 +163,7 @@ while gaming == "Y":
     # Dealer's turn starts only if player didn't already loose
     if not(dealerWon):
         while True:
-            if (dealer.cards[0][0] == 'A'):
+            if (dealer.cards[0].rank == 'A'):
                 # Look for BlackJack
                 Table().show_revealed(player.cards,dealer.cards)
                 if (Game().sum_cards(dealer.cards) == 21):
