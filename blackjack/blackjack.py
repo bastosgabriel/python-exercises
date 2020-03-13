@@ -13,11 +13,7 @@ class Card():
 
         self.rank = rank
         self.suit = suit
-
-        for key in values_dict:
-            if (key == rank):
-                self.value = values_dict[key]
-
+        self.value = values_dict[rank]
 
 class Deck():
     
