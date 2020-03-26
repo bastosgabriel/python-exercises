@@ -1,4 +1,4 @@
-#!/home/bastosgabriel/code/python-exercises/rest_api_flask_and_python/restful_api/venv/bin/python
+#!/home/bastosgabriel/code/python_exercises/rest_api_flask/restful_api/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -46,7 +46,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV='/home/bastosgabriel/code/python-exercises/rest_api_flask_and_python/restful_api/venv'
+VIRTUAL_ENV='/home/bastosgabriel/code/python_exercises/rest_api_flask/restful_api/venv'
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
