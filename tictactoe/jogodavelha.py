@@ -1,6 +1,12 @@
 import os
 import platform
 
+'''
+This should be refactored one day to use some OOP
+
+'''
+
+
 # Display the board at the terminal based on board_list
 def display_board(board_list):
 
